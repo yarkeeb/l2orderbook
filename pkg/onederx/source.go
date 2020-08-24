@@ -94,15 +94,17 @@ func (s *Source) receiveData(ctx context.Context) error {
 			}
 			switch header.Type {
 			case "snapshot":
-				s.onSnapshot(data)
+				err = s.onSnapshot(data)
 			case "update":
-				s.onUpdate(data)
+				err = s.onUpdate(data)
 			default:
+			}
+			if err != nil {
+				return err
 			}
 		}
 
 	}
-	return nil
 }
 
 func (s *Source) onSnapshot(data []byte) error {
